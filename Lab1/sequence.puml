@@ -1,0 +1,16 @@
+@startuml sequence
+title "Добавить товар в корзину"
+
+
+
+!endfunction
+actor Пользователь as user
+participant "Cart" as cart
+database "DataBase" as db
+user -> cart: Добавить товар
+cart -> db++ : Проверить наличие
+db -> db++ : Уменьшить количество товара
+cart <-- db--: Отправить результат
+cart --> user: Отправить результат
+
+@enduml

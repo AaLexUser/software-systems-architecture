@@ -1,0 +1,53 @@
+@startuml usecase
+left to right direction
+' skinparam linetype polyline
+skinparam packageStyle rectangle
+title "Use Case Diagram"
+
+actor "Платежная система" as PaymentSystem
+actor "Гость" as Guest
+actor "Пользователь" as User
+actor "Администратор" as Admin
+
+rectangle "Pokemon Shop" as App {
+    usecase "Регистрация пользователя" as Registration
+    usecase "Редактирование профиля" as EditProfile
+    usecase "Авторизация пользователя" as Authorization
+    usecase "Просмотр списка товаров" as ViewProducts
+    usecase "Просмотр информации о товаре" as ViewProductInfo
+    usecase "Добавить товар в корзину" as AddToCart
+    usecase "Посмотреть корзину" as ViewCart
+    usecase "Удалить товар из корзины" as DeleteFromCart
+    usecase "Оформить заказ" as Checkout
+    usecase "Посмотреть статус заказа" as ViewMyOrders
+    usecase "Посмотреть заказы всех пользователей" as ViewUsersOrders
+    usecase "Добавить товар" as AddItem
+    usecase "Получить рекомендации" as GetRecomendations
+    usecase "Изменить статус заказа" as ChangeOrderStatus
+
+    (AddToCart) .up.> (ViewProducts) : extends
+    (AddToCart) .up.> (ViewProductInfo) : extends
+    (ViewProductInfo) .up.> (ViewProducts) : extends
+    (DeleteFromCart) .up.> (ViewCart) : extends
+    (Checkout) .up.> (ViewCart) : extends
+    (Registration) ..> (Authorization) : include
+    (Registration) ..> (EditProfile) : include
+    (GetRecomendations) .up.> (ViewProducts) : extend
+    (ChangeOrderStatus) ..> (ViewUsersOrders) : extend
+
+    PaymentSystem -up-- Checkout
+
+    Guest -- Registration
+
+    User -- Authorization
+    User -- ViewProducts
+    User -- ViewCart
+    User -- ViewMyOrders
+
+
+    Admin -- ViewUsersOrders
+    Admin -- AddItem
+
+}
+
+@enduml
