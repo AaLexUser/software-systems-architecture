@@ -1,0 +1,83 @@
+@startuml component_diagram
+node "device" as device {
+    node browser{
+        node "frontend system" as frontend{
+            component "Catalog" as catalog
+            component "Cart" as cart
+            component "Order" as order
+            component "Profile" as profile
+            component "Registration" as registration
+            component "Login " as login
+        }
+    }
+}
+registration -[hidden]down-> login
+registration <..>  login 
+login ..> profile
+login ..> cart
+login ..> order
+login ..> catalog
+note left of device
+    device is a userdevice 
+    like a smartphone or a pc
+end note
+
+note top of catalog
+    aka main page
+end note
+
+"payment system" as payment
+frontend -[hidden]right-> server
+cart <-> payment : HTTP
+cart -[hidden]down-> payment 
+
+note right of payment
+    payment system
+    is a third party system
+end note
+
+
+node "Server" as server {
+    node "Nginx" as nginx
+      
+
+    node "Spring Boot\n(Embedded Tomcat)" as boot{
+        node "Spring Data" as data{
+            component "Repository" as repository
+            component "Entities" as entities
+            component "JPA" as jpa
+            entities <.. repository : <<use>>
+            repository ..> jpa : <<use>>
+        }
+        node "Spring Security" as security{
+            frame "Filter Chain" as filter{
+                component "Security Filter A" as filter_a
+                component "Security Filter B" as filter_b
+                component "..." as filter_c
+                component "Security Filter N" as filter_n
+                filter_a .down.> filter_b
+                filter_b .down.> filter_c
+                filter_c .down.> filter_n
+                
+
+            }
+
+        }
+        node "Spring MVC" as mvc{
+            component "Controller" as controller
+            component "Service" as service
+            service ..> repository : <<call>>
+        }
+
+    }
+    
+    database "PostgreSQL\ndatabase" as database{
+
+    }
+}
+frontend <-> nginx : HTTP
+nginx <-> security : HTTP
+jpa <->  database : PostgreSQL\nJDBC driver
+service <..>controller
+filter ..> controller 
+@enduml
