@@ -7,10 +7,23 @@ title "Добавить товар в корзину"
 actor Пользователь as user
 participant "Cart" as cart
 database "DataBase" as db
-user -> cart: Добавить товар
+participant "Платежная система" as payment
+user -> cart++: Оформить заказ
 cart -> db++ : Проверить наличие
-db -> db++ : Уменьшить количество товара
 cart <-- db--: Отправить результат
 cart --> user: Отправить результат
+
+cart -> payment++: Отправить запрос на оплату
+user <-- cart: Перенаправить на страницу оплаты
+cart <-- payment--: Отправить результат
+user <-- cart: Перенаправить на главную страницу
+cart -> db++: Сохранить заказ
+db -> db++: Уменьшить количество товара
+deactivate db
+cart <-- db--: Отправить результат
+cart --> user: Показать сообщение об успешном заказе
+
+
+
 
 @enduml

@@ -22,6 +22,8 @@ rectangle "Pokemon Shop" as App {
     usecase "Посмотреть статус заказа" as ViewMyOrders
     usecase "Посмотреть заказы всех пользователей" as ViewUsersOrders
     usecase "Добавить товар" as AddItem
+    usecase "Удалить товар" as DeleteItem
+    usecase "Изменить характеристики товара" as EditItem
     usecase "Получить рекомендации" as GetRecomendations
     usecase "Изменить статус заказа" as ChangeOrderStatus
 
@@ -43,10 +45,13 @@ rectangle "Pokemon Shop" as App {
     User -- ViewProducts
     User -- ViewCart
     User -- ViewMyOrders
+    User -- EditProfile
 
 
     Admin -- ViewUsersOrders
     Admin -- AddItem
+    Admin -- DeleteItem
+    Admin -- EditItem
 
 }
 
