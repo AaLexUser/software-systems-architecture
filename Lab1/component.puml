@@ -1,23 +1,35 @@
 @startuml component_diagram
 node "device" as device {
     node browser{
-        node "frontend system" as frontend{
-            component "Catalog" as catalog
-            component "Cart" as cart
-            component "Order" as order
-            component "Profile" as profile
-            component "Registration" as registration
-            component "Login " as login
+        node "React" as frontend{
+
+            node "Components" as components{
+                component "Catalog" as catalog
+                component "Cart" as cart
+                component "Order" as order
+                component "Profile" as profile
+                component "Registration" as registration
+                component "Login " as login
+            }
+            node "Router" as router
+            node "Service" as services{
+                component "Axios" as axios
+            }
+            components -up-> services
+            router -right-> components
+
+
         }
     }
 }
 registration -[hidden]down-> login
 registration <..>  login 
 login ..> profile
-login ..> cart
-login ..> order
-login ..> catalog
-note left of device
+catalog -> cart
+catalog -> order
+catalog ->profile
+login -> catalog
+note top of device
     device is a userdevice 
     like a smartphone or a pc
 end note
